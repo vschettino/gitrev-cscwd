@@ -57,45 +57,33 @@ Global software development motivates automatic approaches to find experts to ai
 
 Those experts are developers with core importance to software projects. They can be helpful in different tasks, such as question routing \cite{sun2018}, code review \cite{xia2017} and bug fixing \cite{cavalcanti2014}. Their expertise often perpasses technical knowledge or experience in a given technology, such as progamming language. More than that, there is value to identify people as suitable source of help and information on software design, modules, development process and other project specific activities.
 
-Finding those experts is harder on global software development. Distributed teams, difference of cultures, knowledges, dedication and goals increases traditional collaboration threats \cite{casey2010}. This scenario unveils the urge of automated tools to ease finding suitable partners to specific tasks. A similar issue concern open source development, that have collaboration and a active community on its very foundation \cite{gutwin2004}. Specially for newcomers, who might have a hard time finding help (in the context of question/answering) or someone to approve his changeset (in the context of code review), find suitable developers to aid can ease the path they will endure. Also, a bad initial experience on a begginer's first interaction with the community can discourage future contributions \cite{Bosu2014}. 
+Finding those experts is harder on global software development. Distributed teams, different  cultures, levels of knowledge, dedication and goals increases traditional collaboration threats \cite{casey2010}. This scenario unveils the urge of automated tools to ease finding suitable partners to specific tasks. A similar issue concern open source development, that have collaboration and a active community on its very foundation \cite{gutwin2004}. Specially for newcomers, who might have a hard time finding help (in the context of question/answering) or someone to approve his changeset (in the context of code review), find suitable developers to aid can ease the path they will endure. Also, a bad initial experience on a begginer's first interaction with the community can discourage future contributions \cite{Bosu2014}.
 
-\section{Ease of Use}
+GitHub is becoming one of the most important source of software artifacts, home for millions of open source projects and host of global software development workflows. Many studies use GitHub's data specially because of its size and features such as RESTful API, that contributes to data integration [CITAR "The Promises and Perils of Mining GitHub"]. Today, more than 67 million (25 million active) projects and 24 millions users are hosted on GitHub\footnote{https://octoverse.github.com/}.
 
-\subsection{Maintaining the Integrity of the Specifications}
+GitHub workflow is based on issues and pullrequests. Issues represent feature/support requests and bug reporting that are organized by predefined labels. Contributors open pull requests in order to merge a code change up to the main codebase. In this moment, project core members evaluate the contribution, asserting that the change follows guidelines and overall goals of the project. This model is called pull based method \cite{gousios2014}.
 
-The IEEEtran class file is used to format your paper and style the text. All margins,
-column widths, line spaces, and text fonts are prescribed; please do not
-alter them. You may note peculiarities. For example, the head margin
-measures proportionately more than is customary. This measurement
-and others are deliberate, using specifications that anticipate your paper
-as one part of the entire proceedings, and not as an independent document.
-Please do not revise any of the current designations.
+Since projects hosted on GitHub can reach thousands of contributors and dozens of core members distributed around de globe, find suitable people to help or review can turn into a challenge. Beyond technical expertise, collaborative work demands other skills and aspects in order to be efficient. For instance, worktime, timezone and language proficiency can shatter collaboration quality. However, those who have interacted before have less chance of facing those problems. Thus, finding experts that have already proven themselves as suitable contributors in previous interactions may help those in need of aid. [CITAR GALERA DO GSD]
 
-\section{Prepare Your Paper Before Styling}
-Before you begin to format your paper, first write and save the content as a
-separate text file. Complete all content and organizational editing before
-formatting. Please note sections \ref{AA}--\ref{SCM} below for more information on
-proofreading, spelling and grammar.
+Therefore, this paper's goal is to find experts whitin open source projects that can be helpful to community members. We seek not only to find technical expertise, but also collaborative capacity, that can be translated as time for helping, project workflow and design knowledge, helping expertise and a history of previous interactions.
 
-Keep your text and graphic files separate until after the text has been
-formatted and styled. Do not number text heads---{\LaTeX} will do that
-for you.
+To support this goal, we propose a collaborative network using pullrequest data from a GitHub's project. The network design aims to bring forth expert developers through a clusterization process. We hipotetisize that cores of the detected clusters are important figures whitin the cluster as a collaboration partner. We propose the use of NetSCAN [CITAR FGS], an overlapping community detection algorithm.
 
-\subsection{Abbreviations and Acronyms}\label{AA}
-Define abbreviations and acronyms the first time they are used in the text,
-even after they have been defined in the abstract. Abbreviations such as
-IEEE, SI, MKS, CGS, ac, dc, and rms do not have to be defined. Do not use
-abbreviations in the title or heads unless they are unavoidable.
-
-\subsection{Units}
+\section{Related Work}
 \begin{itemize}
-\item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as ``3.5-inch disk drive''.
-\item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
-\item Do not mix complete spellings and abbreviations of units: ``Wb/m\textsuperscript{2}'' or ``webers per square meter'', not ``webers/m\textsuperscript{2}''. Spell out units when they appear in text: ``. . . a few henries'', not ``. . . a few H''.
-\item Use a zero before decimal points: ``0.25'', not ``.25''. Use ``cm\textsuperscript{3}'', not ``cc''.)
+  \item NETSCAN
+  \item  INFLUENCE ON NETWORKS (ARTIGOS QUE VICTÃO PASSOU)
+  \item  WORKS on finding people to solve bugs and code review
+  \item  Group formation (?)
 \end{itemize}
+\section{Collaborative Network Model}
 
-\subsection{Equations}
+\subsection{Results}
+
+\subsection{Future Work}
+
+\subsection{Conclusions}
+
 Number equations consecutively. To make your
 equations more compact, you may use the solidus (~/~), the exp function, or
 appropriate exponents. Italicize Roman symbols for quantities and variables,
