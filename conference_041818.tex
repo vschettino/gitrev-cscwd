@@ -7,7 +7,6 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
-\usepackage[portuguese]{babel}
 \usepackage[utf8]{inputenc}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -70,13 +69,49 @@ Therefore, this paper's goal is to find experts whitin open source projects that
 To support this goal, we propose a collaborative network using pullrequest data from a GitHub's project. The network design aims to bring forth expert developers through a clusterization process. We hipotetisize that cores of the detected clusters are important figures whitin the cluster as a collaboration partner. We propose the use of NetSCAN~\cite{horta2018}, an overlapping community detection algorithm.
 
 \section{Related Work}
+
+Detecting influential nodes in social networks is a broader problem with significance in several contexts, such as false news propagation\cite{johansson2017}. There are different methods that, in order to find those individuals, use community detection algorithms and graph-related metrics \cite{jalayer2018, simsek2018}. However, they are not validated on software networks nor take collaboration information on their approaches.
+
+There are previous contributions to this field of research, where the main goal is to find experts with software repository data. Many proposed finding suitable code reviewers based on their technical and review expertise \cite{yu2014,xia2017}, although collaboration based approaches \cite{ouni2016,zanjani2016} are relatively new, thus still under explored.
+
+There are also authors that explored mining software repositories to find experts, with focus on collaboration \cite{mo2015}. The main idea is to use social and programming behaviors to point out experts, using a collaborative network and multi-source PageRank algorithm \cite{page1998}. However, they did not use pullrequest data and others datasources from GitHub workflow, also limitating the expertise skills to progamming languages, excluding other technical and process aspects idiosyncratic of each project. Those are gaps we intend to fill with this research.
+
+In summary, there are three aspects that together make our proposal different from previous approaches:
+
 \begin{itemize}
-  \item NETSCAN
-  \item  INFLUENCE ON NETWORKS (ARTIGOS QUE VICTÃO PASSOU)
-  \item  WORKS on finding people to solve bugs and code review
-  \item  Group formation (?)
+  \item We present a collaboration driven and project based method for finding experts within certain groups.
+  \item The highlighted individuals can be expert in project workflow/design specific topics, such as ``\textit{performance}'' or ``\textit{documentation}'', not limited to progamming language or other research narrowed domain.
+  \item Our collaboration network is designed over the pull based method \cite{gousios2014}, focusing on solving problems of this workflow and global software development.
 \end{itemize}
+
 \section{Collaborative Network Model}
+
+Social networks can be represented as sets of nodes connected by edges. This approach seek to reflect relantionships between individuals and the way they interact. There are different lights and grains this data can be analysed, depending on which conclusions the observer want to draw.
+
+Software development social networks represent developers and their interactions on the development process, such as coding, review, discussion and knowledge exchange. GitHub's provide these informations throught a RESTful API\footnote{https://developer.github.com/v3/}, allowing third part developers to dump a given project's data programmatically. The data needed pass through a consolidation process and is loaded to a neo4j instance, a graph oriented database designed to perform well on graph operations and support a better model understanding.
+
+The nodes are developers, and edges are directed relationships of pullrequests revisions. When a developer creates a review comment on a pull request, it creates edge that goes from the commenter to the pullrequest author. Therefore, the model is a bidirectional graph $ G = (V, E) $ where $ V ={v_0, v_1, ... , v_n} $ represent the set of $n$ developers and $E$ is the set of triples (edges) $e_i_j = (v_i, v_j, w)$ between individuals $v_i$ and $v_j$. The weight $w$ is formulated to show how developers influence each other. It represents the contribution share someone have over the colleague. To avoid detecting experts that were influential in the past but are away from the project now, with their collaboration capacity arguabilly decreased, older interactions worth less to the weight count~\eqref{eq:penalization}}. Each interaction $k$ (represented by $inter(v_i,v_j, k)$) between developers $v_i$ and $v_j$ value decreases exponentially the older it gets. The total penalized value is the sum of all interaction values between two given developers.
+With the penalized aggregate value, the weight $w_i_j$ can be calculated~\eqref{eq:weight}}}. $W(v_i,v_j)$ represents how much of $v_j$ interaction came from $v_i$. Thus, $w_i_j$ is always comprised between (0,1]. The closer $w_i_j$ is from 1, greater is the influence of $v_i$ over $v_j$. Also, $w_i_j = 1$ means $v_i$ is responsible for all interaction $v_j$ received.
+
+
+
+\begin{equation}
+P(v_i,v_j)=\sum\limits_{k=1}^{n}\frac{1}{\exp{days(inter(v_i,v_j, k))}}\label{eq:penalization}
+\end{equation}
+
+\begin{equation}
+W(v_i,v_j)=\frac{P(v_i,v_j)}{\sum\limits_{k=1}^{n}{P(v_j,v_k)}}\label{eq:weight}
+\end{equation}
+
+
+Influential nodes tends to have many relationships and high participation on interactions. However, relationships between two influential nodes tend to have lower weights, since they interact with many individuals. Casual contributors tend to concentrate their relationships on influential proactive developers, giving them higher weights on these cases. Habitual contributors (including core members) tend to interact with good collaborators often, giving them higher weights as well. Fig.~\ref{fig:graph} shows the graphical representation of how two developers might be connected on the proposed model.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics{graph}}
+\caption{Graphical representation of developer's relations.}
+\label{fig:graph}
+\end{figure}
+
 
 \subsection{Results}
 
