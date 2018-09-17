@@ -113,7 +113,7 @@ Influential nodes tends to have many relationships and high participation on int
 \end{figure}
 
 \subsection{Network Topology}
-In order to apply this model on a real case scenario, we chose a OpenSource project to populate the network. Seeking a popular repository with reasonable amount of data, we look into official top-5 most reviewed projects\footnote{https://octoverse.github.com/}, selecting the one with most stars. This GitHub feature can be a measure of a project's passive community size\cite{sheoran2014}. These criteria pointed out to \textbf{Node.js}\footnote{https://github.com/nodejs/node}, a popular JavaScript runtime built on Chrome's V8 JavaScript engine. In order to understand the network behavior and evaluate if this is a reasonable representant of FOSS projects in this discussion, the following analyses were conducted. Table shows Node's main size metrics.
+In order to apply this model on a real case scenario, we chose a OpenSource project to populate the network. Seeking a popular repository with reasonable amount of data, we look into official top-5 most reviewed projects\footnote{https://octoverse.github.com/}, selecting the one with most stars. This GitHub feature can be a measure of a project's passive community size\cite{sheoran2014}. These criteria pointed out to \textbf{Node.js}\footnote{https://github.com/nodejs/node}, a popular JavaScript runtime built on Chrome's V8 JavaScript engine. In order to understand the network behavior and evaluate if this is a reasonable representant of FOSS projects in this discussion, the following analyses were conducted. Table~\ref{tab:sizemetrics} shows Node's main size metrics.
 
 \begin{table}[htbp]
 \caption{Node.js Main Size Metrics}
@@ -125,7 +125,7 @@ In order to apply this model on a real case scenario, we chose a OpenSource proj
 50.818 & 13.492 & 53.339 & 2.107 \\
 \hline
 \end{tabular}
-\label{tab1}
+\label{tab:sizemetrics}
 \end{center}
 \end{table}
 
@@ -133,7 +133,6 @@ Those features make Node.js one of the most active and influent project on GitHu
 
 In order to discover how individuals interact on this network, its degree distribution was calculated. This relation is the probability distribution of individuals' degrees over the whole network. Since our network has directed edges, we compute outgoing degree, meaning the count of outgoing edges a node have. This represents how many individuals a particular node interacted with, showing his spreadness over the project. Fig.~\ref{fig:outdegree} shows the outdegree distribution of the proposed network. Based on this metric, often, these networks can be classified as random, free of scale, modular, small world, among others \cite{cross2004}. Since Fig.~\ref{fig:outdegree} shows that few individuals have the most connections, whereas the majority is only responsible for few relations, this can be described as free-scale network, with its outdegree distribution complying with the power law curve.
 
-% The edges are weighted, meaning the magnitude of this relationship in front of others author's interaction. Thus, the distribution also takes weight in consideration, giving a more accurate representation of influence distribution over the project. Fig 1 coming soon.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\linewidth]{images/outdegree}}
@@ -141,13 +140,46 @@ In order to discover how individuals interact on this network, its degree distri
 \label{fig:outdegree}
 \end{figure}
 
+The edges are weighted, meaning the magnitude of each relationship in front of others author's interaction. Thus, Fig~\ref{fig:outdegree-weighted} shows the distribution also takes weight in consideration, giving a more accurate representation of influence distribution over the project. Considering recent contributions are more important to point out one's acbility to colaborate in actual matters, the influence gap grows even more. More than 94.6\% of the contributors have weighted outdegree lower than 1\% of the highest weighted outdegree. And only a little more than 4.5\% of all edges are between those individuals. This reinforces that the vast majority of interactions are made between core members or between regular contributors and core members.
+
+
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\linewidth]{images/outdegree-weighted}}
 \caption{Weighted outdegree distribution}
 \label{fig:outdegree-weighted}
 \end{figure}
 
-\subsection{Results}
+Those metrics show that few individuals are responsible for most part of the discussion over contributions in this open source project. Those act as gatekeepers of project's goals and quality, guiding newcomers and evaluating the matter and content of community contributions. This structure seems to match earlier reported open source project's organization \cite{bergquist2001}. These experts can have knowledge and responsability over the project in general, or specialized in some modules \cite{firefox2018}, technologies or attributions \cite{debian2018}. Some projects do not have a formal division of core members responsability, but rather an informal distribution of tasks based on their availibility and expertise. This might be elucidated on community detection, as described in the next sessions.
+
+\section{NetSCAN clustering algorithm}
+
+The analysis of the network shows there are few individuals that hold great responsability over project's discussion and review, colaborating in higer proportion than the general community. Those also can be responsible for specifics, such as modules or technologies, even this is not formally defined in project's workflow documentation. Thus, it is important to identify them as they might be helpful for contributors on those specific topics, specially beginners that don't know where to start.
+
+NetSCAN\cite{horta2018} is a density-based clustering algorithm, that extends the well known DBSCAN algorithm \cite{ester1996}. The main upgrade with respect to DBSCAN is that NetSCAN considers the edge's direction between two nodes. Other important difference is that NetSCAN also can detect that a individual can be in more than one group. Hence we are searching for informal, blurred and often tenuous expertise and responsability distributions, NetSCAN suits our goals better. NetSCAN identifies each cluster cores, wich can also be overlapped.
+
+NetSCAN receives three parameters, \textit{eps}, \textit{minPts} and \textit{radius}. The first two have a similar behavior than DBSCAN parameters. While \textit{eps} represents the edge's minimal weight consider that relationship on the clustering process, \textit{minPts} is the threshold where only individuals with higher pontuaction can be considered as core members. The last parameter \textit{radius} represents the maximum distance between the core individuals and their cluster's members. For instance, if set on 1, only individuals directed bonded with the core will be part of his cluster.
+
+NetSCAN is also bundled as a Neo4j plugin\footnote{https://github.com/vitorhorta/netscan-neo4j}, and can be runned directly from Cypher queries with dinamic parameters.
+
+[EXPLICAR PORQUE ESCOLHEMOS OS PARAMETROS QUE ESCOLHEMOS (NEM EU SEI PQ)]
+
+\section{Results}
+
+The project data was loaded into the network, with help of neo4j graph database. Not all of contributors counted on Table~\ref{tab:sizemetrics} were loaded, since some never opened or reviewed a pullrequest and only helped opening or replying to issues. Table 1 shows result's summary of the clustering process.
+
+\begin{table}[htbp]
+\caption{Main project}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Nodes} & \textbf{Clusterized}& \textbf{Overlapped} & \textbf{Clusters} & \textbf{Cores} \\
+\hline
+1.444 & 969 & 324 & 13 & 16 \\
+\hline
+\end{tabular}
+\label{tab:sizemetrics}
+\end{center}
+\end{table}
 
 \subsection{Future Work}
 
